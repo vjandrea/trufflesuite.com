@@ -9,6 +9,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 from jinja2 import Template
+import sys
 
 def define_env(env):
     "Definition of the module"
@@ -26,15 +27,26 @@ def define_env(env):
     boxes_file_object = open('src/data/boxes.json')
     deets = json.load(boxes_file_object)
 
+    apiRepo = "https://api.github.com/repos/"
+
     # merge boxes and deets
     for key in deets.keys():
         try:
             dicBox[key]['deets'] = deets[key]
+            dicBox[key]['deets'] = 
+
         except KeyError:
             print("%s is not a box!" % key)
 
     # env.conf['extra']['boxes'] = boxes
     env.conf['extra']['boxes'] = list(dicBox.values())
+
+        response = requests.get("https://api.github.com/repos/" + box['userOrg'] + "/" + box['repoName'] + "/readme", auth=HTTPBasicAuth(username, key))
+
+    with open('boxes-meta.json', 'w') as file:
+        file.write(json.dumps(env.conf['extra']['boxes'], indent=4))
+
+    sys.exit(1)
 
     if os.environ.get("LOCAL_BUILD"):
         env.conf['extra']['boxes'] = env.conf['extra']['boxes'][:6] 
